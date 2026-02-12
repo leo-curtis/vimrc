@@ -1,6 +1,8 @@
 colorscheme retrobox
 syntax on
 filetype plugin indent on
+set mouse=a
+set clipboard=unnamed,unnamedplus
 set expandtab
 set shiftwidth=4
 set tabstop=4
