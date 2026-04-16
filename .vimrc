@@ -62,3 +62,17 @@ endfunction
 nnoremap <leader>t :call ToggleTerminal()<CR>
 tnoremap <leader>w <C-w>k
 tnoremap <leader>t <C-w>N:call ToggleTerminal()<CR>
+
+if exists('##TextYankPost')
+  augroup highlight_yank
+    autocmd!
+    autocmd TextYankPost * silent! call s:hl_yank()
+  augroup END
+
+  function! s:hl_yank()
+    if v:event.operator == 'y'
+      let l:m = matchadd('Visual', '\%''\[\_.*\%'']')
+      call timer_start(300, {-> matchdelete(l:m)})
+    endif
+  endfunction
+endif
