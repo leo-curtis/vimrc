@@ -28,3 +28,4 @@ curl -o ~/.vimrc https://raw.githubusercontent.com/leo-curtis/vimrc/refs/heads/m
 curl -o $HOME\_vimrc https://raw.githubusercontent.com/leo-curtis/vimrc/refs/heads/main/.vimrc
 ```
 
+## [Custom Mappings](mappings.md)

@@ -1,8 +1,13 @@
-colorscheme retrobox
 syntax on
 filetype plugin indent on
 set mouse=a
 set clipboard=unnamed,unnamedplus
+set termguicolors
+augroup transparent_bg
+  autocmd!
+  autocmd ColorScheme * hi Normal ctermbg=NONE guibg=NONE
+augroup END
+colorscheme retrobox
 set expandtab
 set shiftwidth=4
 set tabstop=4
@@ -21,8 +26,32 @@ set incsearch
 set ignorecase
 set smartcase
 set hidden
+set noswapfile
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+
+function! s:DirStart()
+    if argc() == 1 && isdirectory(expand(argv(0)))
+        rightbelow vnew
+        wincmd h
+        vertical resize 40
+    endif
+endfunction
+
+augroup dir_start
+    autocmd!
+    autocmd VimEnter * ++nested call s:DirStart()
+augroup END
+
 let mapleader = " "
 nnoremap <silent> <leader>/ :nohlsearch<CR>
+nnoremap <silent> <leader>bn :bnext<CR>
+nnoremap <silent> <leader>bp :bprev<CR>
+nnoremap <silent> <leader>bb <C-^>
+nnoremap <silent> <leader>bd :bdelete<CR>
+nnoremap <leader>bl :ls<CR>:b<Space>
 
 function! ToggleExplorer()
     let l:explorer_bufs = filter(range(1, bufnr('$')), 'getbufvar(v:val, "&filetype") == "netrw"')
@@ -31,13 +60,15 @@ function! ToggleExplorer()
     if l:explorer_win != -1
         execute l:explorer_win . 'close'
     else
-        Vex
+        let g:netrw_altv = 0
+        leftabove Vex
+        let g:netrw_altv = 1
         vertical resize 40
     endif
 endfunction
 
 nnoremap <silent> <leader>e :call ToggleExplorer()<CR>
-nnoremap <silent> <leader>w <C-w>w<CR>
+nnoremap <silent> <leader>w <C-w>w
 nnoremap <silent> <leader><Left> :vertical resize -10<CR>
 nnoremap <silent> <leader><Right> :vertical resize +10<CR>
 nnoremap <silent> <leader><Up> :resize +10<CR>
